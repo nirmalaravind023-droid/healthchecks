@@ -1,12 +1,12 @@
 {% extends "base_project.html" %}
 {% load compress hc_extras static %}
 
-{% block title %}Notifications - {{ site_name }}{% endblock %}
+{% block title %}Recent Notifications - {{ site_name }}{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
-        <h1>Notifications</h1>
+        <h1>Recent Notifications</h1>
 
         {% if notifications %}
         <div class="table-responsive">
@@ -19,7 +19,6 @@
                         <th>Notification</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     {% for event in notifications %}
                     <tr data-notification-code="{{ event.code }}">
