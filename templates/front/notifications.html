@@ -1,0 +1,72 @@
+{% extends "base_project.html" %}
+{% load compress hc_extras static %}
+
+{% block title %}Notifications - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Notifications</h1>
+
+        {% if notifications %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Check</th>
+                        <th>Status</th>
+                        <th>Notification</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for event in notifications %}
+                    <tr data-notification-code="{{ event.code }}">
+                        <td>
+                            <span data-dt="{{ event.created|timestamp }}"></span>
+                        </td>
+
+                        <td>
+                            {% if event.owner %}
+                            <a href="{% url 'hc-log' event.owner.code %}">
+                                {{ event.owner.name_then_code }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">Test notification</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if event.check_status == "down" %}
+                            <span class="label label-danger">Down</span>
+                            {% elif event.check_status == "up" %}
+                            <span class="label label-success">Up</span>
+                            {% else %}
+                            {{ event.check_status|capfirst }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% include "front/event_summary.html" %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="alert alert-info">
+            No notifications yet.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% compress js %}
+<script src="{% static 'js/dates.js' %}"></script>
+{% endcompress %}
+{% endblock %}

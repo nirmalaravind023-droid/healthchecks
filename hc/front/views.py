@@ -986,6 +986,22 @@ def log(request: AuthenticatedHttpRequest, code: UUID) -> HttpResponse:
     return render(request, "front/log.html", ctx)
 
 
+@login_required
+def notifications(request: AuthenticatedHttpRequest, code: UUID) -> HttpResponse:
+    project, _rw = _get_project_for_user(request, code)
+    q = Notification.objects.filter(owner__project=project)
+    q = q.select_related("owner", "channel")
+    q = q.order_by("-created")
+
+    ctx = {
+        "page": "notifications",
+        "project": project,
+        "notifications": q[:100],
+    }
+
+    return render(request, "front/notifications.html", ctx)
+
+
 def _tz_switches(profile: Profile, check: Check) -> list[str]:
     switches = ["UTC"]
     if profile.tz not in switches:

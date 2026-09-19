@@ -45,6 +45,7 @@ project_urls = [
     path("checks/add/", views.add_check, name="hc-add-check"),
     path("checks/status/", views.status, name="hc-status"),
     path("integrations/", views.channels, name="hc-channels"),
+    path("notifications/", views.notifications, name="hc-notifications"),
 ]
 
 # /
